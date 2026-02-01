@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JEE April Attempt Thumbnail</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #050505;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .thumbnail-container {
+            width: 1280px;
+            height: 720px;
+            background: linear-gradient(110deg, #0a0a0a 0%, #141414 40%, #1a1a1a 70%, #0f0f0f 100%);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.9);
+        }
+
+        /* Noise texture */
+        .thumbnail-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Dramatic red/orange warning glow from left */
+        .warning-glow {
+            position: absolute;
+            left: -200px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 600px;
+            height: 800px;
+            background: radial-gradient(ellipse at center, rgba(220, 50, 50, 0.08) 0%, transparent 60%);
+            z-index: 2;
+        }
+
+        /* Soft light effect for photo area */
+        .light-effect {
+            position: absolute;
+            right: -50px;
+            top: -100px;
+            width: 600px;
+            height: 900px;
+            background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.04) 0%, transparent 50%);
+            z-index: 2;
+        }
+
+        /* Photo placeholder area - right side */
+        .photo-placeholder {
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 460px;
+            height: 560px;
+            border: 2px dashed rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.015) 0%, transparent 100%);
+        }
+
+        .photo-placeholder-icon {
+            width: 70px;
+            height: 70px;
+            border: 2px solid rgba(255, 255, 255, 0.18);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .photo-placeholder-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: rgba(255, 255, 255, 0.25);
+        }
+
+        .photo-placeholder-text {
+            color: rgba(255, 255, 255, 0.25);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Text content area - left side */
+        .text-content {
+            position: absolute;
+            left: 55px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            max-width: 680px;
+        }
+
+        /* Main headline */
+        .main-text {
+            font-family: 'Oswald', sans-serif;
+            font-size: 92px;
+            font-weight: 700;
+            line-height: 1.0;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 
+                0 4px 40px rgba(0, 0, 0, 0.9),
+                0 2px 15px rgba(0, 0, 0, 0.6);
+            margin-bottom: 30px;
+        }
+
+        .main-text .line1 {
+            display: block;
+            font-size: 72px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .main-text .highlight-red {
+            color: #ff4444;
+            position: relative;
+            display: inline-block;
+            text-shadow: 
+                0 0 40px rgba(255, 68, 68, 0.4),
+                0 4px 40px rgba(0, 0, 0, 0.9);
+        }
+
+        /* Subtext */
+        .sub-text {
+            font-family: 'Oswald', sans-serif;
+            font-size: 52px;
+            font-weight: 600;
+            line-height: 1.1;
+            color: rgba(255, 255, 255, 0.9);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            text-shadow: 
+                0 3px 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .sub-text .highlight-yellow {
+            color: #ffd000;
+            text-shadow: 
+                0 0 30px rgba(255, 208, 0, 0.35),
+                0 3px 30px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Urgent badge */
+        .urgent-badge {
+            position: absolute;
+            top: -50px;
+            left: 0;
+            background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 800;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            box-shadow: 0 4px 20px rgba(255, 68, 68, 0.4);
+        }
+
+        /* Decorative line */
+        .accent-line {
+            position: absolute;
+            left: 55px;
+            bottom: 100px;
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, #ff4444, #ffd000, transparent);
+            z-index: 15;
+            border-radius: 2px;
+        }
+
+        /* Corner accents */
+        .corner-accent {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            z-index: 5;
+        }
+
+        .corner-accent.top-left {
+            top: 25px;
+            left: 25px;
+            border-top: 3px solid rgba(255, 68, 68, 0.3);
+            border-left: 3px solid rgba(255, 68, 68, 0.3);
+        }
+
+        .corner-accent.bottom-right {
+            bottom: 25px;
+            right: 25px;
+            border-bottom: 3px solid rgba(255, 208, 0, 0.2);
+            border-right: 3px solid rgba(255, 208, 0, 0.2);
+        }
+
+        /* Subtle vignette */
+        .vignette {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        /* Download instruction */
+        .download-note {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.08);
+            padding: 12px 24px;
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="thumbnail-container">
+        <div class="warning-glow"></div>
+        <div class="light-effect"></div>
+        <div class="vignette"></div>
+        
+        <div class="corner-accent top-left"></div>
+        <div class="corner-accent bottom-right"></div>
+        
+        <div class="text-content">
+            <div class="urgent-badge">⚠ Warning</div>
+            <h1 class="main-text">
+                <span class="line1">DON'T REPEAT</span>
+                MY <span class="highlight-red">MISTAKES</span>
+            </h1>
+            <p class="sub-text">SAVE YOUR <span class="highlight-yellow">APRIL</span> ATTEMPT</p>
+        </div>
+        
+        <div class="accent-line"></div>
+        
+        <div class="photo-placeholder">
+            <div class="photo-placeholder-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+            </div>
+            <span class="photo-placeholder-text">Your Photo Here</span>
+        </div>
+    </div>
+    
+    <p class="download-note">Right-click → Save as image, or take a screenshot to use this thumbnail</p>
+</body>
+</html>
